@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-class AudioTransform():
+class ImageTransform():
     def __init__(self, audio_file: str, color_base: str, action: str) -> None:
         # Tuple (x, y) for positions
         self._defend_position = (0, 0)
