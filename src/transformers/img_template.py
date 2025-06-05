@@ -1,13 +1,15 @@
 from PIL import Image
 import os
 
-class AudioTransform():
+class ImageTransform():
     def __init__(self, audio_file: str, color_base: str, action: str) -> None:
         # Tuple (x, y) for positions
         self._defend_position = (0, 0)
         self._power_position = (0, 0)
         self._cost_position = (0, 0)
-        self._pitch_position = (0, 0)
+        self._blue_pitch_position = (0, 0)
+        self._yellow_pitch_position = (0, 0)
+        self._red_pitch_position = (0, 0)
         self._color_bar_position = (0, 0)
 
         self.__non_symbol = Image.open("assets/NonSymbol.png").convert("RGBA")
@@ -32,7 +34,7 @@ class AudioTransform():
         """
         Saves the image in webp format.
         """
-        self.result_image.save("output.webp", format=format)
+        self.result_image.save("output." + format, format=format)
     
     def replace_cost(self) -> None:
         """
@@ -71,7 +73,7 @@ class AudioTransform():
         self.result_image.paste(self._pitch_imgs[pitch], (self._pitch_position[0], self._pitch_position[1]), self._pitch_imgs[pitch])
         self.result_image.paste(self._color_bar[pitch], (self._color_bar_position[0], self._color_bar_position[1]), self._color_bar[pitch])
 
-    def resplace_non_symbol(self, position: tuple) -> None:
+    def replace_non_symbol(self, position: tuple) -> None:
         """
         Replaces the non-symbol in the image with the specified position.
         :param position: The position to place the non-symbol.
