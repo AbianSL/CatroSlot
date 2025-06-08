@@ -1,3 +1,5 @@
+from transformers import NewImageTransform, OldImageTransform, ImageTransform
+
 def generate_images(talent: str, class_name: str, color: str, version: bool, file_path: str) -> None:
     """
     Generates images based on the provided parameters.
@@ -6,9 +8,9 @@ def generate_images(talent: str, class_name: str, color: str, version: bool, fil
     :param color: The color of the card ("red", "yellow", "blue").
     :param version: The version of the card [New (True) or Old (False)].
     """
+    imageTransformer: ImageTransform = None 
     if version:
-        # TODO: Implement version-specific image generation logic
-        pass
+        imageTransformer = NewImageTransform()
     else:
-        # TODO: Implement default image generation logic
-        pass
+        imageTransformer = OldImageTransform()
+    imageTransformer.auto_replace_and_save()
