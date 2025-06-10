@@ -1,4 +1,4 @@
-from transformers import NewImageTransform, OldImageTransform, ImageTransform
+from .transformers import NewImageTransform, OldImageTransform, ImageTransform
 
 def generate_images(talent: str, class_name: str, color: str, version: bool, file_path: str) -> None:
     """

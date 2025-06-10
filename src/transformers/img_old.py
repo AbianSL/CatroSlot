@@ -1,6 +1,6 @@
-from aud_template import AudioTransform 
+from .img_template import ImageTransform 
 
-class OldImageTransform(AudioTransform):
+class OldImageTransform(ImageTransform):
     def __init__(self) -> None:
         super()
         self._defend_position = (0, 0)
