@@ -1,8 +1,8 @@
 from .img_template import ImageTransform 
 
 class OldImageTransform(ImageTransform):
-    def __init__(self) -> None:
-        super()
+    def __init__(self, audio_file: str, color_base: str, action: str) -> None:
+        super(audio_file, color_base, action)
         self._defend_position = (0, 0)
         self._power_position = (0, 0)
         self._cost_position = (0, 0)
