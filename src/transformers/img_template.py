@@ -8,9 +8,12 @@ class ImageTransform():
         self._power_position = (0, 0)
         self._cost_position = (0, 0)
         self._blue_pitch_position = (0, 0)
+        
         self._yellow_pitch_position = (0, 0)
         self._red_pitch_position = (0, 0)
         self._color_bar_position = (0, 0)
+
+        self.
 
         self.__non_symbol = Image.open("assets/NonSymbol.png").convert("RGBA")
         self.__non_color_bar = Image.open("assets/NonColorBar.png").convert("RGBA")
@@ -63,7 +66,10 @@ class ImageTransform():
     def replace_pitch(self, pitch: int) -> None:
         """
         Replaces the pitch symbol in the image with the specified pitch and the corresponding color bar.
-        :param pitch: The pitch value to replace.
+        :param pitch: The pitch value to replace. 
+            0: blue
+            1: yellow
+            2: red
         :param position: The position to place the pitch symbol.
         """
         if pitch < 0 or pitch >= len(self._pitch_imgs):
@@ -84,5 +90,7 @@ class ImageTransform():
         if position == self._pitch_position:
             self.result_image.paste(self.__non_color_bar, (self._color_bar_position[0], self._color_bar_position[1]), self.__non_color_bar)
 
-    def auto_replace_and_save(self) -> None:
-        pass 
+    def auto_replace_and_save(self, output_file: str) -> None:
+        for pitch in rang(3):
+            replace_pitch(pitch)
+
