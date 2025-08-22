@@ -42,12 +42,19 @@ class ImageTransform:
                 )
         self.result_image = Image.open(image_file).convert("RGBA")
         
-    def save_image(self, format = "webp") -> None:
+        # position 0 = blue, 1 = yellow, 2 = red
+        color_names = ["blue", "yellow", "red"]
+        color_base = color_base.lower()
+        self.color_base = (
+            color_names.index(color_base.lower()) if color_base in color_names else -1
+        )
+
+    def save_image(self, format="webp") -> None:
         """
         Saves the image in webp format.
         """
         self.result_image.save("output." + format, format=format)
-    
+
     def replace_cost(self) -> None:
         """
         Replaces the cost symbol in the image with the specified cost.
