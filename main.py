@@ -7,6 +7,8 @@ def main():
         complete_route = os.path.join(base_directory, file_name)
         if os.path.isfile(complete_route):
             print(file_name)
-    
+            class_name, action, color = file_name.split(".")[0].split("_")
+            generate_images(None, class_name, action, color, True, complete_route)
+
 if __name__ == "__main__":
     main()
