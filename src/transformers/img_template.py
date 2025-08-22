@@ -61,7 +61,11 @@ class ImageTransform:
         :param cost: The cost to replace.
         :param position: The position to place the cost symbol.
         """
-        self.result_image.paste(self.__cost_img, (self._cost_position[0], self._cost_position[1]), self.__cost_img)
+        self.result_image.paste(
+            self.__cost_img,
+            (self._cost_position[0], self._cost_position[1]),
+            self.__cost_img,
+        )
 
     def replace_power(self) -> None:
         """
@@ -69,7 +73,11 @@ class ImageTransform:
         :param power: The power to replace.
         :param position: The position to place the power symbol.
         """
-        self.result_image.paste(self.__power_img, (self._power_position[0], self._power_position[1]), self.__power_img)
+        self.result_image.paste(
+            self.__power_img,
+            (self._power_position[0], self._power_position[1]),
+            self.__power_img,
+        )
 
     def replace_defend(self) -> None:
         """
@@ -77,12 +85,16 @@ class ImageTransform:
         :param defend: The defend value to replace.
         :param position: The position to place the defend symbol.
         """
-        self.result_image.paste(self.__defend_img, (self._defend_position[0], self._defend_position[1]), self.__defend_img)
+        self.result_image.paste(
+            self.__defend_img,
+            (self._defend_position[0], self._defend_position[1]),
+            self.__defend_img,
+        )
 
     def replace_pitch(self, pitch: int) -> None:
         """
         Replaces the pitch symbol in the image with the specified pitch and the corresponding color bar.
-        :param pitch: The pitch value to replace. 
+        :param pitch: The pitch value to replace.
             0: blue
             1: yellow
             2: red
