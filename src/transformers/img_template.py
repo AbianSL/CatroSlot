@@ -90,7 +90,7 @@ class ImageTransform():
         if position == self._pitch_position:
             self.result_image.paste(self.__non_color_bar, (self._color_bar_position[0], self._color_bar_position[1]), self.__non_color_bar)
 
-    def auto_replace_and_save(self, output_file: str) -> None:
-        for pitch in rang(3):
-            replace_pitch(pitch)
-
+    def auto_replace_and_save(self) -> None:
+        for pitch in range(3):
+            self.replace_pitch(pitch)
+            self.save_image()
