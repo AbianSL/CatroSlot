@@ -1,6 +1,14 @@
-from .transformers import NewImageTransform, OldImageTransform, ImageTransform
+from .transformers import ImageTransform, NewImageTransform, OldImageTransform
 
-def generate_images(talent: str, class_name: str, color: str, version: bool, file_path: str) -> None:
+
+def generate_images(
+    talent: str | None,
+    class_name: str,
+    action: str | None,
+    color: str,
+    version: bool,
+    file_path: str,
+) -> None:
     """
     Generates images based on the provided parameters.
     :param talent: The talent of the card (e.g., "shadow", "draconic").
@@ -8,9 +16,13 @@ def generate_images(talent: str, class_name: str, color: str, version: bool, fil
     :param color: The color of the card ("red", "yellow", "blue").
     :param version: The version of the card [New (True) or Old (False)].
     """
-    imageTransformer: ImageTransform = None 
+    imageTransformer: ImageTransform
+    if action is None:
+        action = "Non"
     if version:
-        imageTransformer = NewImageTransform()
+        imageTransformer = NewImageTransform(
+            talent, class_name, action, color, file_path
+        )
     else:
         imageTransformer = OldImageTransform()
     imageTransformer.auto_replace_and_save()
