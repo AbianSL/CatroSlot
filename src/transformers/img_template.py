@@ -99,13 +99,35 @@ class ImageTransform:
             1: yellow
             2: red
         :param position: The position to place the pitch symbol.
-        """
-        if pitch < 0 or pitch >= len(self._pitch_imgs):
+        """  
+        possible_pitch_replaces = {
+            0: lambda: self.result_image.paste(
+                self.__cost_img,
+                (self._blue_pitch_position[0], self._blue_pitch_position[1]),
+                self.__cost_img,
+            ),
+            1: lambda: self.result_image.paste(
+                self.__cost_img,
+                (self._yellow_pitch_position[0], self._yellow_pitch_position[1]),
+                self.__cost_img,
+            ),
+            2: lambda: self.result_image.paste(
+                self.__cost_img,
+                (self._red_pitch_position[0], self._red_pitch_position[1]),
+                self.__cost_img,
+            ),
+        }
+        if pitch < 0 or pitch >= len(possible_pitch_replaces):
             raise ValueError("Pitch value out of range.")
         if pitch >= len(self._color_bar):
             raise ValueError("Color bar for pitch value not found.")
-        self.result_image.paste(self._pitch_imgs[pitch], (self._pitch_position[0], self._pitch_position[1]), self._pitch_imgs[pitch])
-        self.result_image.paste(self._color_bar[pitch], (self._color_bar_position[0], self._color_bar_position[1]), self._color_bar[pitch])
+        self.result_image.paste(
+            self._color_bar[pitch],
+            (self._color_bar_position[0], self._color_bar_position[1]),
+            self._color_bar[pitch],
+        )
+        for range_pitch in range(len(possible_pitch_replaces) - pitch):
+            possible_pitch_replaces[range_pitch]()
 
     def replace_non_symbol(self, position: tuple) -> None:
         """
@@ -114,9 +136,15 @@ class ImageTransform:
         """
         if position[0] < 0 or position[1] < 0:
             raise ValueError("Position must be non-negative.")
-        self.result_image.paste(self.__non_symbol, (position[0], position[1]), self.__non_symbol)
+        self.result_image.paste(
+            self.__non_symbol, (position[0], position[1]), self.__non_symbol
+        )
         if position == self._pitch_position:
-            self.result_image.paste(self.__non_color_bar, (self._color_bar_position[0], self._color_bar_position[1]), self.__non_color_bar)
+            self.result_image.paste(
+                self.__non_color_bar,
+                (self._color_bar_position[0], self._color_bar_position[1]),
+                self.__non_color_bar,
+            )
 
     def auto_replace_and_save(self) -> None:
         for pitch in range(3):
