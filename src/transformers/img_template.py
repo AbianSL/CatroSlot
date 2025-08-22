@@ -1,38 +1,47 @@
-from PIL import Image
 import os
+from pathlib import Path
 
-class ImageTransform():
-    def __init__(self, audio_file: str, color_base: str, action: str) -> None:
-        # Tuple (x, y) for positions
+from PIL import Image
+
+
+class ImageTransform:
+    def __init__(
+        self, image_file: str, color_base: str, action: str, talent: str
+    ) -> None:
+        # positions
         self._defend_position = (0, 0)
         self._power_position = (0, 0)
         self._cost_position = (0, 0)
         self._blue_pitch_position = (0, 0)
-        
+
         self._yellow_pitch_position = (0, 0)
         self._red_pitch_position = (0, 0)
         self._color_bar_position = (0, 0)
 
-        self.
+        # images
+        ASSETS_DIR = Path(__file__).parent / "assets"
+        self.__non_symbol = Image.open(ASSETS_DIR / "NonSymbol.png")
+        self.__non_color_bar = Image.open(ASSETS_DIR / "pitch/NonColorBar.png").convert("RGBA")
+        self.__cost_img = Image.open(ASSETS_DIR / "CostSymbol.png").convert("RGBA")
+        self.__power_img = Image.open(ASSETS_DIR / "PowerSymbol.png").convert("RGBA")
+        self.__defend_img = Image.open(ASSETS_DIR / "DefendSymbol.png").convert("RGBA")
 
-        self.__non_symbol = Image.open("assets/NonSymbol.png").convert("RGBA")
-        self.__non_color_bar = Image.open("assets/NonColorBar.png").convert("RGBA")
-        self.__cost_img = Image.open("assets/CostSymbol.png").convert("RGBA")
-        self.__power_img = Image.open("assets/PowerSymbol.png").convert("RGBA")
-        self.__defend_img = Image.open("assets/DefendSymbol.png").convert("RGBA")
-        
-        self._pitch_imgs = []
-        self._color_bar = []
-        files = os.listdir("assets/pitch") 
+        # card action and talent
+        self.__action = action
+        self.__talent = talent
+
+        self._color_bar: List[Image] = []
+        PITCH_DIR = ASSETS_DIR / "pitch"
+        files = os.listdir(PITCH_DIR)
         for file in files:
             if not file.endswith(".png") or color_base in file or "Non" in file:
                 continue
-            if "Bar" in file:
-                self._color_bar.append(Image.open(os.path.join("assets/pitch", file)).convert("RGBA"))
-            else:    
-                self._pitch_imgs.append(Image.open(os.path.join("assets/pitch", file)).convert("RGBA"))
-        self.result_image = Image.open(audio_file).convert("RGBA")
-
+            else:
+                self._color_bar.append(
+                    Image.open(PITCH_DIR / file).convert("RGBA")
+                )
+        self.result_image = Image.open(image_file).convert("RGBA")
+        
     def save_image(self, format = "webp") -> None:
         """
         Saves the image in webp format.
