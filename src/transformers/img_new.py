@@ -14,5 +14,7 @@ class NewImageTransform(ImageTransform):
         self._defend_position = (343, 575)
         self._power_position = (65, 575)
         self._cost_position = (0, 0)
-        self._pitch_position = [(0, 0)]
-        self._color_bar_position = (0, 0)
+        self._blue_pitch_position = (57, 53)
+        self._yellow_pitch_position = (35, 53)
+        self._red_pitch_position = (45, 33)
+        self._color_bar_position = (70, 28)
