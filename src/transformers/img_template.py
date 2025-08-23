@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
+from typing import List
 
 from PIL import Image
-
 
 class ImageTransform:
     def __init__(
@@ -13,16 +13,16 @@ class ImageTransform:
         self._power_position = (0, 0)
         self._cost_position = (0, 0)
         self._blue_pitch_position = (0, 0)
-
         self._yellow_pitch_position = (0, 0)
         self._red_pitch_position = (0, 0)
         self._color_bar_position = (0, 0)
 
         # images
         ASSETS_DIR = Path(__file__).parent / "assets"
-        self.__non_symbol = Image.open(ASSETS_DIR / "NonSymbol.png")
+        self.__non_symbol = Image.open(ASSETS_DIR / "NonSymbol.png").convert("RGBA")
         self.__non_color_bar = Image.open(ASSETS_DIR / "pitch/NonColorBar.png").convert("RGBA")
         self.__cost_img = Image.open(ASSETS_DIR / "CostSymbol.png").convert("RGBA")
+        self.__pitch_img = self.__cost_img.copy().resize((17, 17))
         self.__power_img = Image.open(ASSETS_DIR / "PowerSymbol.png").convert("RGBA")
         self.__defend_img = Image.open(ASSETS_DIR / "DefendSymbol.png").convert("RGBA")
 
@@ -41,6 +41,7 @@ class ImageTransform:
                     Image.open(PITCH_DIR / file).convert("RGBA")
                 )
         self.result_image = Image.open(image_file).convert("RGBA")
+        self._original_image = self.result_image.copy() 
         
         # position 0 = blue, 1 = yellow, 2 = red
         color_names = ["blue", "yellow", "red"]
@@ -102,32 +103,41 @@ class ImageTransform:
         """  
         possible_pitch_replaces = {
             0: lambda: self.result_image.paste(
-                self.__cost_img,
-                (self._blue_pitch_position[0], self._blue_pitch_position[1]),
-                self.__cost_img,
+                self.__pitch_img,
+                (self._red_pitch_position[0], self._red_pitch_position[1]),
+                self.__pitch_img,
             ),
             1: lambda: self.result_image.paste(
-                self.__cost_img,
+                self.__pitch_img,
                 (self._yellow_pitch_position[0], self._yellow_pitch_position[1]),
-                self.__cost_img,
+                self.__pitch_img,
             ),
             2: lambda: self.result_image.paste(
-                self.__cost_img,
-                (self._red_pitch_position[0], self._red_pitch_position[1]),
-                self.__cost_img,
+                self.__pitch_img,
+                (self._blue_pitch_position[0], self._blue_pitch_position[1]),
+                self.__pitch_img
             ),
         }
         if pitch < 0 or pitch >= len(possible_pitch_replaces):
             raise ValueError("Pitch value out of range.")
-        if pitch >= len(self._color_bar):
-            raise ValueError("Color bar for pitch value not found.")
+        for range_pitch in range(len(possible_pitch_replaces) - pitch):
+            possible_pitch_replaces[range_pitch]()
+
+    def replace_bar(self, pitch: int) -> None:
+        """
+        Replaces the color bar in the image with the specified pitch.
+        :param pitch: The pitch value to replace.
+            0: blue
+            1: yellow
+            2: red
+        """
+        if pitch < 0 or pitch >= len(self._color_bar):
+            raise ValueError("Pitch value out of range.")
         self.result_image.paste(
             self._color_bar[pitch],
             (self._color_bar_position[0], self._color_bar_position[1]),
             self._color_bar[pitch],
         )
-        for range_pitch in range(len(possible_pitch_replaces) - pitch):
-            possible_pitch_replaces[range_pitch]()
 
     def replace_non_symbol(self, position: tuple) -> None:
         """
@@ -148,5 +158,7 @@ class ImageTransform:
 
     def auto_replace_and_save(self) -> None:
         for pitch in range(3):
+            self.result_image = self._original_image.copy()
             self.replace_pitch(pitch)
-            self.save_image()
+            self.replace_bar(pitch)
+        self.save_image()
