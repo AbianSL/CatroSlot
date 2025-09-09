@@ -15,12 +15,13 @@ class ImageTransform:
         self._blue_pitch_position = (0, 0)
         self._yellow_pitch_position = (0, 0)
         self._red_pitch_position = (0, 0)
+        self._pitch_position = (0, 0)
         self._color_bar_position = (0, 0)
 
         # images
         ASSETS_DIR = Path(__file__).parent / "assets"
-        self.__non_symbol = Image.open(ASSETS_DIR / "NonSymbol.png").convert("RGBA")
-        self.__non_color_bar = Image.open(ASSETS_DIR / "pitch/NonColorBar.png").convert("RGBA")
+        self.__non_symbol = Image.open(ASSETS_DIR / "NonSymbol.png").convert("RGBA").resize((50, 50))
+        self.__non_color_bar = Image.open(ASSETS_DIR / "pitch/NonColorBar.png").convert("RGBA").resize((312, 6))
         self.__cost_img = Image.open(ASSETS_DIR / "CostSymbol.png").convert("RGBA")
         self.__pitch_img = self.__cost_img.copy().resize((17, 17))
         self.__power_img = Image.open(ASSETS_DIR / "PowerSymbol.png").convert("RGBA")
@@ -146,19 +147,21 @@ class ImageTransform:
         """
         if position[0] < 0 or position[1] < 0:
             raise ValueError("Position must be non-negative.")
+        
+        image_to_paste = self.__non_color_bar if position == self._color_bar_position else self.__non_symbol
+        if position == self._power_position or position == self._defend_position:
+            image_to_paste = image_to_paste.resize((30, 30))
         self.result_image.paste(
-            self.__non_symbol, (position[0], position[1]), self.__non_symbol
+            image_to_paste, (position[0], position[1]), image_to_paste
         )
-        if position == self._pitch_position:
-            self.result_image.paste(
-                self.__non_color_bar,
-                (self._color_bar_position[0], self._color_bar_position[1]),
-                self.__non_color_bar,
-            )
 
     def auto_replace_and_save(self) -> None:
         for pitch in range(3):
             self.result_image = self._original_image.copy()
             self.replace_pitch(pitch)
             self.replace_bar(pitch)
+        self.replace_non_symbol(self._defend_position)
+        self.replace_non_symbol(self._power_position)
+        self.replace_non_symbol(self._cost_position)
+        self.replace_non_symbol(self._color_bar_position)
         self.save_image()
