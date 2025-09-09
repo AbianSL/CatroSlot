@@ -13,7 +13,7 @@ class NewImageTransform(ImageTransform):
         super().__init__(image_file, color_base, action, talent)
         self._defend_position = (392, 554)
         self._power_position = (29, 554)
-        self._cost_position = (0, 0)
+        self._cost_position = (30, 30)
         self._blue_pitch_position = (57, 53)
         self._yellow_pitch_position = (35, 53)
         self._red_pitch_position = (45, 33)
