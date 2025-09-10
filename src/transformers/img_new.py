@@ -16,10 +16,10 @@ class NewImageTransform(ImageTransform):
         self._pitch_position = (30, 30)
         self._cost_position = (370, 29)
 
-        self._blue_pitch_position = (57, 53)
-        self._yellow_pitch_position = (35, 53)
-        self._red_pitch_position = (45, 33)
-        self._color_bar_position = (70, 28)
+        self._blue_pitch_position: tuple[int, int] = (57, 53)
+        self._yellow_pitch_position: tuple[int, int] = (35, 53)
+        self._red_pitch_position: tuple[int, int] = (45, 33)
+        self._color_bar_position: tuple[int, int] = (70, 28)
 
         # resize images
         self._non_symbol = self._non_symbol.resize((50, 50))

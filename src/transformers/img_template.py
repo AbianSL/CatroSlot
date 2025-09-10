@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-from typing import List
 
 from PIL import Image
 
@@ -10,14 +9,14 @@ class ImageTransform:
         self, image_file: str, color_base: str, action: str, talent: str
     ) -> None:
         # positions
-        self._defend_position = (0, 0)
-        self._power_position = (0, 0)
-        self._cost_position = (0, 0)
-        self._blue_pitch_position = (0, 0)
-        self._yellow_pitch_position = (0, 0)
-        self._red_pitch_position = (0, 0)
-        self._pitch_position = (0, 0)
-        self._color_bar_position = (0, 0)
+        self._defend_position: tuple[int, int] = (0, 0)
+        self._power_position: tuple[int, int] = (0, 0)
+        self._cost_position: tuple[int, int] = (0, 0)
+        self._blue_pitch_position: tuple[int, int] = (0, 0)
+        self._yellow_pitch_position: tuple[int, int] = (0, 0)
+        self._red_pitch_position: tuple[int, int] = (0, 0)
+        self._pitch_position: tuple[int, int] = (0, 0)
+        self._color_bar_position: tuple[int, int] = (0, 0)
 
         # images
         ASSETS_DIR = Path(__file__).parent / "assets"
@@ -35,7 +34,7 @@ class ImageTransform:
         self.__action = action
         self.__talent = talent
 
-        self._color_bar: List[Image] = []
+        self._color_bar: list[Image] = []
         PITCH_DIR = ASSETS_DIR / "pitch"
         files = os.listdir(PITCH_DIR)
         for file in files:
@@ -142,7 +141,7 @@ class ImageTransform:
             self._color_bar[pitch],
         )
 
-    def replace_non_symbol(self, position: tuple) -> None:
+    def replace_non_symbol(self, position: tuple[int, int]) -> None:
         """
         Replaces the non-symbol in the image with the specified position.
         :param position: The position to place the non-symbol.
