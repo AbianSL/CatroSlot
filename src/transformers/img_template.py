@@ -171,4 +171,7 @@ class ImageTransform:
         self.replace_non_symbol(self._cost_position)
         self.replace_non_symbol(self._color_bar_position)
         self.replace_non_symbol(self._pitch_position)
+        self.replace_cost()
+        self.replace_power()
+        self.replace_defend()
         self.save_image()

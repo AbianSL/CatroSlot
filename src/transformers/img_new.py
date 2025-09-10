@@ -26,3 +26,6 @@ class NewImageTransform(ImageTransform):
         self._non_color_bar = self._non_color_bar.resize((312, 6))
         self._pitch_img = self._pitch_img.resize((17, 17))
         self._small_non_symbol = self._small_non_symbol.copy().resize((30, 30))
+        self._defend_img = self._defend_img.resize((30, 30))
+        self._power_img = self._power_img.resize((30, 30))
+        self._cost_img = self._cost_img.resize((50, 50))
