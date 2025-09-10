@@ -11,8 +11,8 @@ class NewImageTransform(ImageTransform):
         image_file: str,
     ) -> None:
         super().__init__(image_file, color_base, action, talent)
-        self._defend_position = (392, 554)
-        self._power_position = (29, 554)
+        self._defend_position = (390, 552)
+        self._power_position = (28, 551)
         self._pitch_position = (30, 30)
         self._cost_position = (371, 30)
 
@@ -25,7 +25,7 @@ class NewImageTransform(ImageTransform):
         self._non_symbol = self._non_symbol.resize((50, 50))
         self._non_color_bar = self._non_color_bar.resize((312, 6))
         self._pitch_img = self._pitch_img.resize((17, 17))
-        self._small_non_symbol = self._small_non_symbol.copy().resize((30, 30))
-        self._defend_img = self._defend_img.resize((30, 30))
-        self._power_img = self._power_img.resize((30, 30))
+        self._small_non_symbol = self._small_non_symbol.copy().resize((33, 33))
+        self._defend_img = self._defend_img.resize((33, 33))
+        self._power_img = self._power_img.resize((33, 34))
         self._cost_img = self._cost_img.resize((50, 50))
