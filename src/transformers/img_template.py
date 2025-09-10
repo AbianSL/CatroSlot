@@ -4,6 +4,7 @@ from typing import List
 
 from PIL import Image
 
+
 class ImageTransform:
     def __init__(
         self, image_file: str, color_base: str, action: str, talent: str
@@ -20,12 +21,15 @@ class ImageTransform:
 
         # images
         ASSETS_DIR = Path(__file__).parent / "assets"
-        self.__non_symbol = Image.open(ASSETS_DIR / "NonSymbol.png").convert("RGBA").resize((50, 50))
-        self.__non_color_bar = Image.open(ASSETS_DIR / "pitch/NonColorBar.png").convert("RGBA").resize((312, 6))
-        self.__cost_img = Image.open(ASSETS_DIR / "CostSymbol.png").convert("RGBA")
-        self.__pitch_img = self.__cost_img.copy().resize((17, 17))
-        self.__power_img = Image.open(ASSETS_DIR / "PowerSymbol.png").convert("RGBA")
-        self.__defend_img = Image.open(ASSETS_DIR / "DefendSymbol.png").convert("RGBA")
+        self._non_symbol = Image.open(ASSETS_DIR / "NonSymbol.png").convert("RGBA")
+        self._non_color_bar = Image.open(ASSETS_DIR / "pitch/NonColorBar.png").convert(
+            "RGBA"
+        )
+        self._cost_img = Image.open(ASSETS_DIR / "CostSymbol.png").convert("RGBA")
+        self._pitch_img = self._cost_img.copy()
+        self._power_img = Image.open(ASSETS_DIR / "PowerSymbol.png").convert("RGBA")
+        self._defend_img = Image.open(ASSETS_DIR / "DefendSymbol.png").convert("RGBA")
+        self._small_non_symbol = self._non_symbol.copy()
 
         # card action and talent
         self.__action = action
@@ -38,12 +42,10 @@ class ImageTransform:
             if not file.endswith(".png") or color_base in file or "Non" in file:
                 continue
             else:
-                self._color_bar.append(
-                    Image.open(PITCH_DIR / file).convert("RGBA")
-                )
+                self._color_bar.append(Image.open(PITCH_DIR / file).convert("RGBA"))
         self.result_image = Image.open(image_file).convert("RGBA")
-        self._original_image = self.result_image.copy() 
-        
+        self._original_image = self.result_image.copy()
+
         # position 0 = blue, 1 = yellow, 2 = red
         color_names = ["blue", "yellow", "red"]
         color_base = color_base.lower()
@@ -64,9 +66,9 @@ class ImageTransform:
         :param position: The position to place the cost symbol.
         """
         self.result_image.paste(
-            self.__cost_img,
+            self._cost_img,
             (self._cost_position[0], self._cost_position[1]),
-            self.__cost_img,
+            self._cost_img,
         )
 
     def replace_power(self) -> None:
@@ -76,9 +78,9 @@ class ImageTransform:
         :param position: The position to place the power symbol.
         """
         self.result_image.paste(
-            self.__power_img,
+            self._power_img,
             (self._power_position[0], self._power_position[1]),
-            self.__power_img,
+            self._power_img,
         )
 
     def replace_defend(self) -> None:
@@ -88,9 +90,9 @@ class ImageTransform:
         :param position: The position to place the defend symbol.
         """
         self.result_image.paste(
-            self.__defend_img,
+            self._defend_img,
             (self._defend_position[0], self._defend_position[1]),
-            self.__defend_img,
+            self._defend_img,
         )
 
     def replace_pitch(self, pitch: int) -> None:
@@ -101,22 +103,22 @@ class ImageTransform:
             1: yellow
             2: red
         :param position: The position to place the pitch symbol.
-        """  
+        """
         possible_pitch_replaces = {
             0: lambda: self.result_image.paste(
-                self.__pitch_img,
+                self._pitch_img,
                 (self._red_pitch_position[0], self._red_pitch_position[1]),
-                self.__pitch_img,
+                self._pitch_img,
             ),
             1: lambda: self.result_image.paste(
-                self.__pitch_img,
+                self._pitch_img,
                 (self._yellow_pitch_position[0], self._yellow_pitch_position[1]),
-                self.__pitch_img,
+                self._pitch_img,
             ),
             2: lambda: self.result_image.paste(
-                self.__pitch_img,
+                self._pitch_img,
                 (self._blue_pitch_position[0], self._blue_pitch_position[1]),
-                self.__pitch_img
+                self._pitch_img,
             ),
         }
         if pitch < 0 or pitch >= len(possible_pitch_replaces):
@@ -147,10 +149,14 @@ class ImageTransform:
         """
         if position[0] < 0 or position[1] < 0:
             raise ValueError("Position must be non-negative.")
-        
-        image_to_paste = self.__non_color_bar if position == self._color_bar_position else self.__non_symbol
+
+        image_to_paste = (
+            self._non_color_bar
+            if position == self._color_bar_position
+            else self._non_symbol
+        )
         if position == self._power_position or position == self._defend_position:
-            image_to_paste = image_to_paste.resize((30, 30))
+            image_to_paste = self._small_non_symbol
         self.result_image.paste(
             image_to_paste, (position[0], position[1]), image_to_paste
         )
@@ -164,4 +170,5 @@ class ImageTransform:
         self.replace_non_symbol(self._power_position)
         self.replace_non_symbol(self._cost_position)
         self.replace_non_symbol(self._color_bar_position)
+        self.replace_non_symbol(self._pitch_position)
         self.save_image()
