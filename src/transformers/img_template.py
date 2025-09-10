@@ -64,11 +64,7 @@ class ImageTransform:
         :param cost: The cost to replace.
         :param position: The position to place the cost symbol.
         """
-        self.result_image.paste(
-            self._cost_img,
-            (self._cost_position[0], self._cost_position[1]),
-            self._cost_img,
-        )
+        self._blend_paste(self._cost_img, self._cost_position)
 
     def replace_power(self) -> None:
         """
@@ -76,11 +72,7 @@ class ImageTransform:
         :param power: The power to replace.
         :param position: The position to place the power symbol.
         """
-        self.result_image.paste(
-            self._power_img,
-            (self._power_position[0], self._power_position[1]),
-            self._power_img,
-        )
+        self._blend_paste(self._power_img, self._power_position)
 
     def replace_defend(self) -> None:
         """
@@ -88,11 +80,7 @@ class ImageTransform:
         :param defend: The defend value to replace.
         :param position: The position to place the defend symbol.
         """
-        self.result_image.paste(
-            self._defend_img,
-            (self._defend_position[0], self._defend_position[1]),
-            self._defend_img,
-        )
+        self._blend_paste(self._defend_img, self._defend_position)
 
     def replace_pitch(self, pitch: int) -> None:
         """
@@ -104,21 +92,9 @@ class ImageTransform:
         :param position: The position to place the pitch symbol.
         """
         possible_pitch_replaces = {
-            0: lambda: self.result_image.paste(
-                self._pitch_img,
-                (self._red_pitch_position[0], self._red_pitch_position[1]),
-                self._pitch_img,
-            ),
-            1: lambda: self.result_image.paste(
-                self._pitch_img,
-                (self._yellow_pitch_position[0], self._yellow_pitch_position[1]),
-                self._pitch_img,
-            ),
-            2: lambda: self.result_image.paste(
-                self._pitch_img,
-                (self._blue_pitch_position[0], self._blue_pitch_position[1]),
-                self._pitch_img,
-            ),
+            0: lambda: self._blend_paste(self._pitch_img, self._red_pitch_position),
+            1: lambda: self._blend_paste(self._pitch_img, self._yellow_pitch_position),
+            2: lambda: self._blend_paste(self._pitch_img, self._blue_pitch_position),
         }
         if pitch < 0 or pitch >= len(possible_pitch_replaces):
             raise ValueError("Pitch value out of range.")
@@ -135,11 +111,7 @@ class ImageTransform:
         """
         if pitch < 0 or pitch >= len(self._color_bar):
             raise ValueError("Pitch value out of range.")
-        self.result_image.paste(
-            self._color_bar[pitch],
-            (self._color_bar_position[0], self._color_bar_position[1]),
-            self._color_bar[pitch],
-        )
+        self._blend_paste(self._color_bar[pitch], self._color_bar_position)
 
     def replace_non_symbol(self, position: tuple[int, int]) -> None:
         """
@@ -156,9 +128,7 @@ class ImageTransform:
         )
         if position == self._power_position or position == self._defend_position:
             image_to_paste = self._small_non_symbol
-        self.result_image.paste(
-            image_to_paste, (position[0], position[1]), image_to_paste
-        )
+        self._blend_paste(image_to_paste, position)
 
     def auto_replace_and_save(self) -> None:
         for pitch in range(3):
@@ -174,3 +144,11 @@ class ImageTransform:
         self.replace_power()
         self.replace_defend()
         self.save_image()
+
+    def _blend_paste(self, image: Image.Image, position: tuple[int, int]) -> None:
+        """
+        Pega una imagen en la posición dada con blending alfa.
+        """
+        temp_layer = Image.new("RGBA", self.result_image.size, (0, 0, 0, 0))
+        temp_layer.paste(image, position, image)
+        self.result_image = Image.alpha_composite(self.result_image, temp_layer)
