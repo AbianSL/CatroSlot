@@ -5,31 +5,33 @@ class NameGenerator:
         self.__name_parts: list[str] = [talent if talent else "", class_name]
         self.__generated_name: str = ""
 
-    def generate_name(self, 
-                      has_cost: bool, 
-                      has_pitch: bool,
-                      power_state: bool,
-                      defend_state: int,
-                      color_id: int) -> str:
+    def generate_name(
+        self,
+        has_cost: bool,
+        has_pitch: bool,
+        power_state: bool,
+        defend_state: int,
+        color_id: int,
+    ) -> str:
         self.__name_parts.append("" if has_cost else "non-cost")
         self.__name_parts.append("" if has_pitch else "non-pitch")
         if not power_state:
-            if defend_state == 0:
+            if defend_state == -1:
                 self.__name_parts.append("default")
-            elif defend_state == 1:
+            elif defend_state == 0:
                 self.__name_parts.append("non-attack")
-            elif defend_state == 2:
-                # TODO: Determinate name for this case
-                self.__name_parts.append("?") 
-        else:
-            if defend_state == 0:
+            elif defend_state == 1:
                 # TODO: Determinate name for this case
                 self.__name_parts.append("?")
-            elif defend_state == 1:
+        else:
+            if defend_state == -1:
+                # TODO: Determinate name for this case
+                self.__name_parts.append("?")
+            elif defend_state == 0:
                 self.__name_parts.append("attack")
-            elif defend_state == 2:
+            elif defend_state == 1:
                 self.__name_parts.append("ally")
-        self.__name_parts.append(["blue", "yellow", "red"][color_id])
+        self.__name_parts.append(color_id if color_id >= 0 else "")
         return self.get_name_generated()
 
     def get_name_generated(self) -> str:

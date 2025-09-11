@@ -16,7 +16,7 @@ class NewImageTransform(ImageTransform):
         self._defend_position: tuple[int, int] = (390, 552)
         self._power_position: tuple[int, int] = (28, 552)
         self._pitch_position: tuple[int, int] = (30, 30)
-        self._cost_position: tuple[int, int] = (370, 29)
+        self._cost_position: tuple[int, int] = (371, 30)
 
         self._blue_pitch_position: tuple[int, int] = (57, 53)
         self._yellow_pitch_position: tuple[int, int] = (35, 53)
