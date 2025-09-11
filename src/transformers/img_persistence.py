@@ -13,7 +13,6 @@ class ImagePersistence:
 
     def save_image(
         self,
-        color_id: int,
         image: Image,
         format: str = "webp",
         verbose: bool = True,
@@ -25,8 +24,13 @@ class ImagePersistence:
             self._metadata.has_pitch,
             self._metadata.power_state,
             self._metadata.defend_state,
-            color_id,
+            self._metadata.color_id,
         )
-        image.save(f"{result_name}.{format}", format=format.upper())
+        DIRECTORY = "outputs"
+        import os
+
+        if not os.path.exists(DIRECTORY):
+            os.makedirs(DIRECTORY)
+        image.save(f"{DIRECTORY}/{result_name}.{format}", format=format)
         if verbose:
             print(f"Image saved as {result_name}.{format}")

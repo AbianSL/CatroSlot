@@ -3,9 +3,8 @@ from pathlib import Path
 
 from PIL import Image
 
-from transformers.img_persistence import ImagePersistence
-
 from .img_metadata import ImageMetadata
+from .img_persistence import ImagePersistence
 
 
 class ImageTransform:
