@@ -1,8 +1,10 @@
 import os
 from pathlib import Path
-from .name_generator import NameGenerator 
 
 from PIL import Image
+
+from .img_metadata import ImageMetadata
+
 
 class ImageTransform:
     def __init__(
@@ -30,13 +32,8 @@ class ImageTransform:
         self._defend_img = Image.open(ASSETS_DIR / "DefendSymbol.png").convert("RGBA")
         self._small_non_symbol = self._non_symbol.copy()
 
-        # card action and talent
-        self.__action = action
-        self.__talent = talent
-        self.__has_cost = True
-        self.__has_pitch = True
-        self.__power_state = True # False: non-symbol, True: power
-        self.__defend_state = 0  # 0: non-symbol, 1: defend, 2: life
+        # metadata
+        self.__metadata = ImageMetadata(action, talent)
 
         self._color_bar: list[Image] = []
         PITCH_DIR = ASSETS_DIR / "pitch"
@@ -60,10 +57,7 @@ class ImageTransform:
         """
         Saves the image in webp format.
         """
-        name_generator = NameGenerator(self.__talent, self.__action)
-        file_name = name_generator.generate_name(
-
-                )
+        pass
 
     def replace_cost(self) -> None:
         """
