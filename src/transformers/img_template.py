@@ -31,6 +31,7 @@ class ImageTransform:
         self._power_img = Image.open(ASSETS_DIR / "PowerSymbol.png").convert("RGBA")
         self._defend_img = Image.open(ASSETS_DIR / "DefendSymbol.png").convert("RGBA")
         self._small_non_symbol = self._non_symbol.copy()
+        self._life_img = Image.open(ASSETS_DIR / "LifeSymbol.png").convert("RGBA")
 
         # metadata
         self.__metadata = ImageMetadata(action, talent)
@@ -82,6 +83,14 @@ class ImageTransform:
         :param position: The position to place the defend symbol.
         """
         self._blend_paste(self._defend_img, self._defend_position)
+
+    def replace_life(self) -> None:
+        """
+        Paste the life symbol in the image at the specified position.
+        That replaces the non-symbol if it exists or the defend symbol.
+        """
+        self.__metadata.defend_state = 1
+        self._blend_paste(self._life_img, self._defend_position)
 
     def replace_pitch(self, pitch: int) -> None:
         """
