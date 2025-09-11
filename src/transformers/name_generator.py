@@ -19,9 +19,11 @@ class NameGenerator:
             elif defend_state == 1:
                 self.__name_parts.append("non-attack")
             elif defend_state == 2:
-                self.__name_parts.append("?")
+                # TODO: Determinate name for this case
+                self.__name_parts.append("?") 
         else:
             if defend_state == 0:
+                # TODO: Determinate name for this case
                 self.__name_parts.append("?")
             elif defend_state == 1:
                 self.__name_parts.append("attack")
