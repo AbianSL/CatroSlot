@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from .name_generator import NameGenerator 
 
 from PIL import Image
 
@@ -32,6 +33,10 @@ class ImageTransform:
         # card action and talent
         self.__action = action
         self.__talent = talent
+        self.__has_cost = True
+        self.__has_pitch = True
+        self.__power_state = True # False: non-symbol, True: power
+        self.__defend_state = 0  # 0: non-symbol, 1: defend, 2: life
 
         self._color_bar: list[Image] = []
         PITCH_DIR = ASSETS_DIR / "pitch"
@@ -55,7 +60,10 @@ class ImageTransform:
         """
         Saves the image in webp format.
         """
-        self.result_image.save("output." + format, format=format)
+        name_generator = NameGenerator(self.__talent, self.__action)
+        file_name = name_generator.generate_name(
+
+                )
 
     def replace_cost(self) -> None:
         """
