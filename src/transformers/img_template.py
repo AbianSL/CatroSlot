@@ -62,25 +62,22 @@ class ImageTransform:
 
     def replace_cost(self) -> None:
         """
-        Replaces the cost symbol in the image with the specified cost.
-        :param cost: The cost to replace.
-        :param position: The position to place the cost symbol.
+        Paste the cost symbol in the image at the specified position.
+        That replaces the non-cost symbol if it exists.
         """
         self._blend_paste(self._cost_img, self._cost_position)
 
     def replace_power(self) -> None:
         """
-        Replaces the power symbol in the image with the specified power.
-        :param power: The power to replace.
-        :param position: The position to place the power symbol.
+        Paste the power symbol in the image at the specified position.
+        That replaces the non-symbol if it exists.
         """
         self._blend_paste(self._power_img, self._power_position)
 
     def replace_defend(self) -> None:
         """
-        Replaces the defend symbol in the image with the specified defend value.
-        :param defend: The defend value to replace.
-        :param position: The position to place the defend symbol.
+        Paste the defend symbol in the image at the specified position.
+        That replaces the non-symbol if it exists or the life symbol.
         """
         self._blend_paste(self._defend_img, self._defend_position)
 
@@ -99,7 +96,6 @@ class ImageTransform:
             0: blue
             1: yellow
             2: red
-        :param position: The position to place the pitch symbol.
         """
         possible_pitch_replaces = {
             0: lambda: self._blend_paste(self._pitch_img, self._red_pitch_position),
