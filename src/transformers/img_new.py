@@ -33,5 +33,6 @@ class NewImageTransform(ImageTransform):
             (33, 33), resample=Image.BILINEAR
         )
         self._defend_img = self._defend_img.resize((33, 33), resample=Image.BILINEAR)
+        self._life_img = self._life_img.resize((33, 33), resample=Image.BILINEAR)
         self._power_img = self._power_img.resize((33, 33), resample=Image.BILINEAR)
         self._cost_img = self._cost_img.resize((51, 51), resample=Image.BILINEAR)

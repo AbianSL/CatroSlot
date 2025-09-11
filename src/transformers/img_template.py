@@ -3,6 +3,8 @@ from pathlib import Path
 
 from PIL import Image
 
+from transformers.img_persistence import ImagePersistence
+
 from .img_metadata import ImageMetadata
 
 
@@ -35,6 +37,7 @@ class ImageTransform:
 
         # metadata
         self.__metadata = ImageMetadata(action, talent)
+        self.__image_persistence = ImagePersistence(self.__metadata)
 
         self._color_bar: list[Image] = []
         PITCH_DIR = ASSETS_DIR / "pitch"
@@ -54,11 +57,11 @@ class ImageTransform:
             color_names.index(color_base.lower()) if color_base in color_names else -1
         )
 
-    def save_image(self, format="webp") -> None:
+    def save_image(self) -> None:
         """
         Saves the image in webp format.
         """
-        pass
+        self.__image_persistence.save_image(self.result_image)
 
     def replace_cost(self) -> None:
         """
@@ -157,7 +160,44 @@ class ImageTransform:
         self._blend_paste(image_to_paste, position)
 
     def auto_replace_and_save(self) -> None:
-        self.save_image()
+        """
+        Automatically use all the possible combinations of replace methods
+        and save the image with the corresponding metadata and name.
+        """
+        for power_state in [False, True]:
+            if power_state:
+                self.replace_power()
+            else:
+                self.replace_non_symbol(self._power_position)
+
+            for defend_state in [-1, 0, 1]:
+                if defend_state == 0:
+                    self.replace_defend()
+                elif defend_state == 1:
+                    self.replace_life()
+                else:
+                    self.replace_non_symbol(self._defend_position)
+
+                for has_cost in [False, True]:
+                    if has_cost:
+                        self.replace_cost()
+                    else:
+                        self.replace_non_symbol(self._cost_position)
+
+                    for pitch in range(3):
+                        self.result_image = self._original_image.copy()
+                        if pitch < 2:
+                            self.replace_pitch(pitch)
+                        else:
+                            self.replace_non_symbol(self._red_pitch_position)
+                            self.replace_non_symbol(self._yellow_pitch_position)
+                            self.replace_non_symbol(self._blue_pitch_position)
+
+                        if self.color_base != -1:
+                            self.replace_bar(self.color_base)
+                        else:
+                            self.replace_non_symbol(self._color_bar_position)
+                        self.save_image()
 
     def _blend_paste(self, image: Image.Image, position: tuple[int, int]) -> None:
         """
