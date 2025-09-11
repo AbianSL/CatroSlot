@@ -65,6 +65,7 @@ class ImageTransform:
         Paste the cost symbol in the image at the specified position.
         That replaces the non-cost symbol if it exists.
         """
+        self.__metadata.has_cost = True
         self._blend_paste(self._cost_img, self._cost_position)
 
     def replace_power(self) -> None:
@@ -72,6 +73,7 @@ class ImageTransform:
         Paste the power symbol in the image at the specified position.
         That replaces the non-symbol if it exists.
         """
+        self.__metadata.power_state = True
         self._blend_paste(self._power_img, self._power_position)
 
     def replace_defend(self) -> None:
@@ -79,6 +81,7 @@ class ImageTransform:
         Paste the defend symbol in the image at the specified position.
         That replaces the non-symbol if it exists or the life symbol.
         """
+        self.__metadata.defend_state = 0
         self._blend_paste(self._defend_img, self._defend_position)
 
     def replace_life(self) -> None:
@@ -104,6 +107,7 @@ class ImageTransform:
         }
         if pitch < 0 or pitch >= len(possible_pitch_replaces):
             raise ValueError("Pitch value out of range.")
+        self.__metadata.has_pitch = True
         for range_pitch in range(len(possible_pitch_replaces) - pitch):
             possible_pitch_replaces[range_pitch]()
 
@@ -117,6 +121,7 @@ class ImageTransform:
         """
         if pitch < 0 or pitch >= len(self._color_bar):
             raise ValueError("Pitch value out of range.")
+        self.__metadata.color_id = pitch
         self._blend_paste(self._color_bar[pitch], self._color_bar_position)
 
     def replace_non_symbol(self, position: tuple[int, int]) -> None:
@@ -126,29 +131,32 @@ class ImageTransform:
         """
         if position[0] < 0 or position[1] < 0:
             raise ValueError("Position must be non-negative.")
+        position_map = {
+            self._cost_position: (
+                lambda: setattr(self.__metadata, "has_cost", False),
+                self._non_symbol,
+            ),
+            self._color_bar_position: (
+                lambda: setattr(self.__metadata, "color_id", -1),
+                self._non_color_bar,
+            ),
+            self._power_position: (
+                lambda: setattr(self.__metadata, "power_state", False),
+                self._small_non_symbol,
+            ),
+            self._defend_position: (
+                lambda: setattr(self.__metadata, "defend_state", -1),
+                self._small_non_symbol,
+            ),
+        }
 
-        image_to_paste = (
-            self._non_color_bar
-            if position == self._color_bar_position
-            else self._non_symbol
-        )
-        if position == self._power_position or position == self._defend_position:
-            image_to_paste = self._small_non_symbol
+        image_to_paste = self._non_symbol
+        if position in position_map:
+            metadata_action, image_to_paste = position_map[position]
+            metadata_action()
         self._blend_paste(image_to_paste, position)
 
     def auto_replace_and_save(self) -> None:
-        for pitch in range(3):
-            self.result_image = self._original_image.copy()
-            self.replace_pitch(pitch)
-            self.replace_bar(pitch)
-        self.replace_non_symbol(self._defend_position)
-        self.replace_non_symbol(self._power_position)
-        self.replace_non_symbol(self._cost_position)
-        self.replace_non_symbol(self._color_bar_position)
-        self.replace_non_symbol(self._pitch_position)
-        self.replace_cost()
-        self.replace_power()
-        self.replace_defend()
         self.save_image()
 
     def _blend_paste(self, image: Image.Image, position: tuple[int, int]) -> None:
