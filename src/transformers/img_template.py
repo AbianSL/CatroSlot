@@ -3,7 +3,6 @@ from pathlib import Path
 
 from PIL import Image
 
-
 class ImageTransform:
     def __init__(
         self, image_file: str, color_base: str, action: str, talent: str
