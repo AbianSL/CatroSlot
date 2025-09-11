@@ -5,5 +5,5 @@ class ImageMetadata:
         self.has_cost: bool = True
         self.has_pitch: bool = True
         self.power_state: bool = True  # False: non-symbol, True: power
-        self.defend_state: int = 0  # 0: non-symbol, 1: defend, 2: life
-        self.color_id: int = -1  # 0: blue, 1: yellow, 2: red
+        self.defend_state: int = -1  # -1: non-symbol 0: defend, 1: life
+        self.color_id: int = -1  # -1: non-color 0: blue, 1: yellow, 2: red
