@@ -17,8 +17,6 @@ def generate_images(
     :param version: The version of the card [New (True) or Old (False)].
     """
     imageTransformer: ImageTransform
-    if action is None:
-        action = "Non"
     if version:
         imageTransformer = NewImageTransform(
             talent, class_name, action, color, file_path

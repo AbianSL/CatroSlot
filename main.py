@@ -9,7 +9,16 @@ def main():
         complete_route = os.path.join(base_directory, file_name)
         if os.path.isfile(complete_route):
             class_name, action, color = file_name.split(".")[0].split("_")
-            generate_images(None, class_name, action, color, True, complete_route)
+            talent = None
+            if action.lower() not in [
+                "attack",
+                "ally",
+                "non-attack",
+                "non-ally",
+                "non",
+            ]:
+                talent = action
+            generate_images(talent, class_name, action, color, True, complete_route)
 
 
 if __name__ == "__main__":
