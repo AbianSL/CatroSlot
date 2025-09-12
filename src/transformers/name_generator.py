@@ -22,19 +22,19 @@ class NameGenerator:
                 self.__name_parts.append("non-attack")
             elif defend_state == 1:
                 # TODO: Determinate name for this case
-                self.__name_parts.append("?")
+                self.__name_parts.append("?-ally")
         else:
             if defend_state == -1:
                 # TODO: Determinate name for this case
-                self.__name_parts.append("?")
+                self.__name_parts.append("?-non-defend")
             elif defend_state == 0:
                 self.__name_parts.append("attack")
             elif defend_state == 1:
                 self.__name_parts.append("ally")
-        self.__name_parts.append(color_id if color_id >= 0 else "")
+        self.__name_parts.append(str(3 - color_id) if color_id >= 0 else "")
         return self.get_name_generated()
 
     def get_name_generated(self) -> str:
-        self.__generated_name = "-".join(filter(None, self.__name_parts)).lower()
+        self.__generated_name = "_".join(filter(None, self.__name_parts)).lower()
         self.__name_parts = [self.__talent if self.__talent else "", self.__class_name]
         return self.__generated_name

@@ -12,7 +12,7 @@ class NewImageTransform(ImageTransform):
         color_base: str,
         image_file: str,
     ) -> None:
-        super().__init__(image_file, color_base, action, talent)
+        super().__init__(image_file, color_base, class_name, talent)
         self._defend_position: tuple[int, int] = (390, 552)
         self._power_position: tuple[int, int] = (28, 552)
         self._pitch_position: tuple[int, int] = (30, 30)

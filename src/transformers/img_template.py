@@ -9,7 +9,7 @@ from .img_persistence import ImagePersistence
 
 class ImageTransform:
     def __init__(
-        self, image_file: str, color_base: str, action: str, talent: str
+        self, image_file: str, color_base: str, class_name: str, talent: str
     ) -> None:
         # positions
         self._defend_position: tuple[int, int] = (0, 0)
@@ -35,7 +35,7 @@ class ImageTransform:
         self._life_img = Image.open(ASSETS_DIR / "LifeSymbol.png").convert("RGBA")
 
         # metadata
-        self.__metadata = ImageMetadata(action, talent)
+        self.__metadata = ImageMetadata(class_name, talent)
         self.__image_persistence = ImagePersistence(self.__metadata)
 
         self._color_bar: list[Image] = []
@@ -108,7 +108,7 @@ class ImageTransform:
             2: lambda: self._blend_paste(self._pitch_img, self._blue_pitch_position),
         }
         if pitch < 0 or pitch >= len(possible_pitch_replaces):
-            raise ValueError("Pitch value out of range.")
+            raise ValueError(f"{pitch} Pitch value out of range.")
         self.__metadata.has_pitch = True
         for range_pitch in range(len(possible_pitch_replaces) - pitch):
             possible_pitch_replaces[range_pitch]()
@@ -122,7 +122,7 @@ class ImageTransform:
             2: red
         """
         if pitch < 0 or pitch >= len(self._color_bar):
-            raise ValueError("Pitch value out of range.")
+            raise ValueError(f"{pitch} Pitch value out of range.")
         self.__metadata.color_id = pitch
         self._blend_paste(self._color_bar[pitch], self._color_bar_position)
 
@@ -164,39 +164,34 @@ class ImageTransform:
         and save the image with the corresponding metadata and name.
         """
         for power_state in [False, True]:
-            if power_state:
-                self.replace_power()
-            else:
-                self.replace_non_symbol(self._power_position)
-
             for defend_state in [-1, 0, 1]:
-                if defend_state == 0:
-                    self.replace_defend()
-                elif defend_state == 1:
-                    self.replace_life()
-                else:
-                    self.replace_non_symbol(self._defend_position)
-
                 for has_cost in [False, True]:
-                    if has_cost:
-                        self.replace_cost()
-                    else:
-                        self.replace_non_symbol(self._cost_position)
-
-                    for pitch in range(3):
-                        self.result_image = self._original_image.copy()
-                        if pitch < 2:
-                            self.replace_pitch(pitch)
-                        else:
-                            self.replace_non_symbol(self._red_pitch_position)
-                            self.replace_non_symbol(self._yellow_pitch_position)
-                            self.replace_non_symbol(self._blue_pitch_position)
-
-                        if self.color_base != -1:
-                            self.replace_bar(self.color_base)
-                        else:
-                            self.replace_non_symbol(self._color_bar_position)
-                        self.save_image()
+                    for has_pitch in [False, True]:
+                        for pitch in [-1, 0, 1, 2]:
+                            if power_state:
+                                self.replace_power()
+                            else:
+                                self.replace_non_symbol(self._power_position)
+                            if defend_state == 0:
+                                self.replace_defend()
+                            elif defend_state == 1:
+                                self.replace_life()
+                            else:
+                                self.replace_non_symbol(self._defend_position)
+                            if has_cost:
+                                self.replace_cost()
+                            else:
+                                self.replace_non_symbol(self._cost_position)
+                            if has_pitch:
+                                self.replace_pitch(pitch if pitch >= 0 else 0)
+                            else:
+                                self.replace_non_symbol(self._pitch_position)
+                            if pitch >= 0:
+                                self.replace_bar(pitch)
+                            else:
+                                self.replace_non_symbol(self._color_bar_position)
+                            self.save_image()
+                            self.result_image = self._original_image.copy()
 
     def _blend_paste(self, image: Image.Image, position: tuple[int, int]) -> None:
         """
