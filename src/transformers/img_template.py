@@ -150,12 +150,18 @@ class ImageTransform:
                 lambda: setattr(self.__metadata, "defend_state", -1),
                 self._small_non_symbol,
             ),
+            self._pitch_position: (
+                lambda: setattr(self.__metadata, "has_pitch", False),
+                self._non_symbol,
+            ),
         }
 
         image_to_paste = self._non_symbol
         if position in position_map:
             metadata_action, image_to_paste = position_map[position]
             metadata_action()
+        else:
+            raise ValueError("ERROR [replace_non_symbol]: Position not recognized.")
         self._blend_paste(image_to_paste, position)
 
     def auto_replace_and_save(self) -> None:
