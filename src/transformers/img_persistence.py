@@ -31,6 +31,13 @@ class ImagePersistence:
 
         if not os.path.exists(DIRECTORY):
             os.makedirs(DIRECTORY)
-        image.save(f"{DIRECTORY}/{result_name}.{format}", format=format)
+        OUTPUT_DIR = (
+            "outputs/"
+            + ((self._metadata.talent + "_") if self._metadata.talent else "")
+            + self._metadata.class_name
+        )
+        if not os.path.exists(OUTPUT_DIR):
+            os.makedirs(OUTPUT_DIR)
+        image.save(f"{OUTPUT_DIR}/{result_name}.{format}", format=format)
         if verbose:
-            print(f"Image saved as {result_name}.{format}")
+            print(f"Image saved as {result_name}.{format} on {OUTPUT_DIR}/")
