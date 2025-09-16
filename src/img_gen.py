@@ -1,4 +1,7 @@
+import os
+
 from .transformers import ImageTransform, NewImageTransform, OldImageTransform
+from .separate_name import separate_name
 
 
 def generate_images(
@@ -28,3 +31,10 @@ def generate_images(
             talent, class_name, action, color, file_path
         )
     imageTransformer.auto_replace_and_save()
+
+def generate_images_from_directory(base_directory: str, is_new: bool, format: str = "webp") -> None:
+    for file_name in os.listdir(base_directory):
+        complete_route = os.path.join(base_directory, file_name)
+        if os.path.isfile(complete_route):
+            talent, class_name, action, color = separate_name(file_name)
+            generate_images(talent, class_name, action, color, is_new, complete_route, format)
