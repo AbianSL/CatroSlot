@@ -33,6 +33,14 @@ def generate_images(
     imageTransformer.auto_replace_and_save()
 
 def generate_images_from_directory(base_directory: str, is_new: bool, format: str = "webp") -> None:
+    """
+    Generate images for all files in the specified directory. Generating their
+    corresponding versions based on the naming convention.
+    Args:
+        base_directory (str): The directory containing the base images.
+        is_new (bool): True for new edition, False for old edition.
+        format (str): The format to save the images in (default is "webp").
+    """
     for file_name in os.listdir(base_directory):
         complete_route = os.path.join(base_directory, file_name)
         if os.path.isfile(complete_route):
