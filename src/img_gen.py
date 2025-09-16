@@ -8,6 +8,7 @@ def generate_images(
     color: str,
     version: bool,
     file_path: str,
+    format: str = "webp",
 ) -> None:
     """
     Generates images based on the provided parameters.

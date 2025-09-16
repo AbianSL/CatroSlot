@@ -9,7 +9,11 @@ from .img_persistence import ImagePersistence
 
 class ImageTransform:
     def __init__(
-        self, image_file: str, color_base: str, class_name: str, talent: str
+        self, 
+        image_file: str, 
+        color_base: str, 
+        class_name: str, 
+        talent: str
     ) -> None:
         """
         Initializes the ImageTransform with the given parameters.
@@ -64,11 +68,11 @@ class ImageTransform:
             color_names.index(color_base.lower()) if color_base in color_names else -1
         )
 
-    def save_image(self) -> None:
+    def save_image(self, format: str = "webp") -> None:
         """
         Saves the image using calling the persistence class
         """
-        self.__image_persistence.save_image(self.result_image)
+        self.__image_persistence.save_image(self.result_image, format)
 
     def replace_cost(self) -> None:
         """
@@ -172,7 +176,7 @@ class ImageTransform:
             raise ValueError("ERROR [replace_non_symbol]: Position not recognized.")
         self._blend_paste(image_to_paste, position)
 
-    def auto_replace_and_save(self) -> None:
+    def auto_replace_and_save(self, format: str = "webp") -> None:
         """
         Automatically use all the possible combinations of replace methods
         and save the image with the corresponding metadata and name.
@@ -204,7 +208,7 @@ class ImageTransform:
                                 self.replace_bar(pitch)
                             else:
                                 self.replace_non_symbol(self._color_bar_position)
-                            self.save_image()
+                            self.save_image(format)
                             self.result_image = self._original_image.copy()
 
     def _blend_paste(self, image: Image.Image, position: tuple[int, int]) -> None:
