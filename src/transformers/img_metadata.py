@@ -1,5 +1,14 @@
 class ImageMetadata:
+    """
+    A class to represent metadata for the card image.
+    """
     def __init__(self, class_name: str, talent: str) -> None:
+        """
+        Initializes the ImageMetadata with class name and talent.
+        Args:
+            :param class_name: The class of the card (e.g., "warrior", "illusionist").
+            :param talent: The talent of the card (e.g., "shadow", "draconic").
+        """
         self.class_name: str = class_name
         self.talent: str = talent
         self.has_cost: bool = True

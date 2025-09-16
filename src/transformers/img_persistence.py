@@ -6,6 +6,11 @@ from .name_generator import NameGenerator
 
 class ImagePersistence:
     def __init__(self, metada: ImageMetadata) -> None:
+        """
+        Initializes the ImagePersistence with metadata and a name generator.
+        Args:
+            :param metada: An instance of ImageMetadata containing the card's metadata.
+        """
         self._metadata: ImageMetadata = metada
         self._name_generator: NameGenerator = NameGenerator(
             metada.talent, metada.class_name
@@ -17,6 +22,14 @@ class ImagePersistence:
         format: str = "webp",
         verbose: bool = True,
     ) -> None:
+        """
+        Saves the image to the outputs directory with a generated name based on metadata and
+        if it is necessary create a sub-directory for the class and talent.
+        Args:
+            :param image: The PIL Image object to be saved.
+            :param format: The format to save the image in (default is "webp").
+            :param verbose: If True, prints status messages (default is True).
+        """
         if verbose:
             print("Saving image...")
         result_name = self._name_generator.generate_name(

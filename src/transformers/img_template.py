@@ -11,6 +11,14 @@ class ImageTransform:
     def __init__(
         self, image_file: str, color_base: str, class_name: str, talent: str
     ) -> None:
+        """
+        Initializes the ImageTransform with the given parameters.
+        Args:
+            :param image_file: The path to the image file to be transformed.
+            :param color_base: The base color of the card ("red", "yellow", "blue").
+            :param class_name: The class of the card (e.g., "warrior", "illusionist").
+            :param talent: The talent of the card (e.g., "shadow", "draconic").
+        """
         # positions
         self._defend_position: tuple[int, int] = (0, 0)
         self._power_position: tuple[int, int] = (0, 0)
@@ -58,7 +66,7 @@ class ImageTransform:
 
     def save_image(self) -> None:
         """
-        Saves the image in webp format.
+        Saves the image using calling the persistence class
         """
         self.__image_persistence.save_image(self.result_image)
 
@@ -201,7 +209,10 @@ class ImageTransform:
 
     def _blend_paste(self, image: Image.Image, position: tuple[int, int]) -> None:
         """
-        Pega una imagen en la posición dada con blending alfa.
+        Paste an image onto the result image at the specified position using alpha compositing.
+        Args:
+            :param image: The image to paste.
+            :param position: The (x, y) position to paste the image.
         """
         temp_layer = Image.new("RGBA", self.result_image.size, (0, 0, 0, 0))
         temp_layer.paste(image, position, image)

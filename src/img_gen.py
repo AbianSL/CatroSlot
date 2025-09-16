@@ -11,10 +11,11 @@ def generate_images(
 ) -> None:
     """
     Generates images based on the provided parameters.
-    :param talent: The talent of the card (e.g., "shadow", "draconic").
-    :param class_name: The class of the card (e.g., "warrior", "illusionist").
-    :param color: The color of the card ("red", "yellow", "blue").
-    :param version: The version of the card [New (True) or Old (False)].
+    Args:
+        :param talent: The talent of the card (e.g., "shadow", "draconic").
+        :param class_name: The class of the card (e.g., "warrior", "illusionist").
+        :param color: The color of the card ("red", "yellow", "blue").
+        :param version: The version of the card [New (True) or Old (False)].
     """
     imageTransformer: ImageTransform
     if version:
