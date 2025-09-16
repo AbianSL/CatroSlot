@@ -5,13 +5,13 @@ from .img_template import ImageTransform
 
 class NewImageTransform(ImageTransform):
     def __init__(
-        self,
-        talent: str | None,
-        class_name: str,
-        action: str,
-        color_base: str,
-        image_file: str,
-    ) -> None:
+            self,
+            talent: str | None,
+            class_name: str,
+            action: str,
+            color_base: str,
+            image_file: str,
+            ) -> None:
         super().__init__(image_file, color_base, class_name, talent)
         self._defend_position: tuple[int, int] = (390, 552)
         self._power_position: tuple[int, int] = (28, 552)
