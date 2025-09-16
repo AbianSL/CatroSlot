@@ -7,6 +7,7 @@ def separate_name(full_name: str) -> list[str]:
         "non-attack",
         "non-ally",
         "non",
+        "default"
     ]:
         talent = action
     return [talent, class_name, action, color]

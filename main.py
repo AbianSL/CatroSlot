@@ -5,7 +5,7 @@ from src.separate_name import separate_name
 
 
 def main():
-    is_new = True
+    is_new = False 
     base_directory = os.path.dirname(os.path.abspath(__file__)) + "/base"
     for file_name in os.listdir(base_directory):
         complete_route = os.path.join(base_directory, file_name)

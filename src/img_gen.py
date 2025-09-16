@@ -22,5 +22,7 @@ def generate_images(
             talent, class_name, action, color, file_path
         )
     else:
-        imageTransformer = OldImageTransform()
+        imageTransformer = OldImageTransform(
+            talent, class_name, action, color, file_path
+        )
     imageTransformer.auto_replace_and_save()
