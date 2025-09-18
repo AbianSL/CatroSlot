@@ -1,3 +1,1 @@
-"""Catroslot package."""
-
-__version__ = "1.1.0"
+from .img_gen import generate_images, generate_images_from_directory

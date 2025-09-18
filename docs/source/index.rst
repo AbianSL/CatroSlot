@@ -10,9 +10,6 @@ Add your content using ``reStructuredText`` syntax. See the
 `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
 documentation for details.
 
-.. automodule:: main 
-  :members:
-
 .. automodule:: src.img_gen
   :members:
 
@@ -20,13 +17,8 @@ documentation for details.
   :maxdepth: 2
   :caption: Contents:
 
-modules
-
-Indices and tables
-======================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+  api/modules
+  api/img_gen
+  api/separate_name
+  api/transformers
 

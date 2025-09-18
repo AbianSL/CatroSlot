@@ -8,12 +8,13 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../src'))
 
-project = 'CatroSlot'
-copyright = '2025, AbianSL'
-author = 'AbianSL'
-release = '1.1.0'
+sys.path.insert(0, os.path.abspath("../../src"))
+
+project = "CatroSlot"
+copyright = "2025, AbianSL"
+author = "AbianSL"
+release = "1.1.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -21,15 +22,22 @@ release = '1.1.0'
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.autosummary",
 ]
+autosummary_generate = True
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": True,
+    "show-inheritance": True,
+}
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
-
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
-html_static_path = ['_static']
+html_theme = "alabaster"
+html_static_path = ["_static"]

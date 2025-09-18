@@ -30,8 +30,7 @@ load:
 
 generate:
 	@$(MAKE) load
-	$(SPHINXDOCS) -o source/api ../src
-
+	$(SPHINXDOCS) -o source/api ../src --separate
 
 # Put it first so that "make" without argument is like "make help".
 help:
