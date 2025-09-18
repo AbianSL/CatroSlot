@@ -11,6 +11,15 @@ class ImageTransform:
     def __init__(
         self, image_file: str, color_base: str, class_name: str, talent: str
     ) -> None:
+        """
+        Initializes the ImageTransform with the given parameters.
+
+        Args:
+            :param image_file: The path to the image file to be transformed.
+            :param color_base: The base color of the card ("red", "yellow", "blue").
+            :param class_name: The class of the card (e.g., "warrior", "illusionist").
+            :param talent: The talent of the card (e.g., "shadow", "draconic").
+        """
         # positions
         self._defend_position: tuple[int, int] = (0, 0)
         self._power_position: tuple[int, int] = (0, 0)
@@ -56,11 +65,11 @@ class ImageTransform:
             color_names.index(color_base.lower()) if color_base in color_names else -1
         )
 
-    def save_image(self) -> None:
+    def save_image(self, format: str = "webp") -> None:
         """
-        Saves the image in webp format.
+        Saves the image using calling the persistence class
         """
-        self.__image_persistence.save_image(self.result_image)
+        self.__image_persistence.save_image(self.result_image, format)
 
     def replace_cost(self) -> None:
         """
@@ -97,10 +106,12 @@ class ImageTransform:
     def replace_pitch(self, pitch: int) -> None:
         """
         Replaces the pitch symbol in the image with the specified pitch and the corresponding color bar.
-        :param pitch: The pitch value to replace.
-            0: blue
-            1: yellow
-            2: red
+
+        Args:
+            :param pitch: The pitch value to replace.
+                0: blue
+                1: yellow
+                2: red
         """
         possible_pitch_replaces = {
             0: lambda: self._blend_paste(self._pitch_img, self._red_pitch_position),
@@ -116,10 +127,12 @@ class ImageTransform:
     def replace_bar(self, pitch: int) -> None:
         """
         Replaces the color bar in the image with the specified pitch.
-        :param pitch: The pitch value to replace.
-            0: blue
-            1: yellow
-            2: red
+
+        Args:
+            :param pitch: The pitch value to replace.
+                0: blue
+                1: yellow
+                2: red
         """
         if pitch < 0 or pitch >= len(self._color_bar):
             raise ValueError(f"{pitch} Pitch value out of range.")
@@ -129,7 +142,9 @@ class ImageTransform:
     def replace_non_symbol(self, position: tuple[int, int]) -> None:
         """
         Replaces the non-symbol in the image with the specified position.
-        :param position: The position to place the non-symbol.
+
+        Args:
+            :param position: The position to place the non-symbol.
         """
         if position[0] < 0 or position[1] < 0:
             raise ValueError("Position must be non-negative.")
@@ -150,18 +165,27 @@ class ImageTransform:
                 lambda: setattr(self.__metadata, "defend_state", -1),
                 self._small_non_symbol,
             ),
+            self._pitch_position: (
+                lambda: setattr(self.__metadata, "has_pitch", False),
+                self._non_symbol,
+            ),
         }
 
         image_to_paste = self._non_symbol
         if position in position_map:
             metadata_action, image_to_paste = position_map[position]
             metadata_action()
+        else:
+            raise ValueError("ERROR [replace_non_symbol]: Position not recognized.")
         self._blend_paste(image_to_paste, position)
 
-    def auto_replace_and_save(self) -> None:
+    def auto_replace_and_save(self, format: str = "webp") -> None:
         """
         Automatically use all the possible combinations of replace methods
         and save the image with the corresponding metadata and name.
+
+        Args:
+            :param format: The format to save the image in (default is "webp").
         """
         for power_state in [False, True]:
             for defend_state in [-1, 0, 1]:
@@ -190,12 +214,16 @@ class ImageTransform:
                                 self.replace_bar(pitch)
                             else:
                                 self.replace_non_symbol(self._color_bar_position)
-                            self.save_image()
+                            self.save_image(format)
                             self.result_image = self._original_image.copy()
 
     def _blend_paste(self, image: Image.Image, position: tuple[int, int]) -> None:
         """
-        Pega una imagen en la posición dada con blending alfa.
+        Paste an image onto the result image at the specified position using alpha compositing.
+
+        Args:
+            :param image: The image to paste.
+            :param position: The (x, y) position to paste the image.
         """
         temp_layer = Image.new("RGBA", self.result_image.size, (0, 0, 0, 0))
         temp_layer.paste(image, position, image)

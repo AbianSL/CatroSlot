@@ -7,3 +7,8 @@ requires-python = ">=3.13"
 dependencies = [
     "pillow>=11.2.1",
 ]
+
+[dependency-groups]
+dev = [
+    "sphinx>=8.2.3",
+]

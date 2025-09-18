@@ -4,6 +4,12 @@ from .img_template import ImageTransform
 
 
 class NewImageTransform(ImageTransform):
+    """
+    A class to handle image transformations for the new edition of cards.
+    Inherits from ImageTransform and sets specific positions and resized images
+    for the new edition.
+    """
+
     def __init__(
         self,
         talent: str | None,
@@ -12,6 +18,16 @@ class NewImageTransform(ImageTransform):
         color_base: str,
         image_file: str,
     ) -> None:
+        """
+        Initializes the NewImageTransform with specific positions and resized images.
+
+        Args:
+            :param talent: The talent of the card (e.g., "shadow", "draconic").
+            :param class_name: The class of the card (e.g., "warrior", "illusionist").
+            :param action: The action of the card (e.g., "attack", "non-attack").
+            :param color_base: The base color of the card ("red", "yellow", "blue").
+            :param image_file: The path to the image file to be transformed.
+        """
         super().__init__(image_file, color_base, class_name, talent)
         self._defend_position: tuple[int, int] = (390, 552)
         self._power_position: tuple[int, int] = (28, 552)
