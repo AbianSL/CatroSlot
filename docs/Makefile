@@ -8,6 +8,8 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
 
+.PHONY : local-server build clean load help
+
 local-server:
 	python3 -m http.server --directory $(BUILDDIR)/html 8000
 	@echo "Serving at http://localhost:8000"
@@ -20,10 +22,10 @@ build:
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
 clean:
-	rm -rf $(BUILDDIR)/*
+	rm -rf $(BUILDDIR)/* && rm -rf 
 
 load:
-	source ../.venv/bin/activate
+	. ../.venv/bin/activate
 
 # Put it first so that "make" without argument is like "make help".
 help:
