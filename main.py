@@ -4,7 +4,7 @@ from PIL import Image
 from src.img_gen import generate_images_from_directory 
 
 def main():
-    option_selected = input("Are the images new edition or old? (Y/n): ").strip().lower()
+    option_selected = input("Are the images new edition? (Y/n): ").strip().lower()
     is_new = False if option_selected in ['n', 'no', ''] else True
     supported_formats = Image.registered_extensions().values()
     option_selected = input("Which format do you want to save the images? (default: webp)").strip().lower()
