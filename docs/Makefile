@@ -7,10 +7,11 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
+SPHINXDOCS    ?= sphinx-apidoc
 
 .PHONY : local-server build clean load help
 
-local-server:
+server:
 	python3 -m http.server --directory $(BUILDDIR)/html 8000
 	@echo "Serving at http://localhost:8000"
 
@@ -26,6 +27,11 @@ clean:
 
 load:
 	. ../.venv/bin/activate
+
+generate:
+	@$(MAKE) load
+	$(SPHINXDOCS) -o source/api ../src
+
 
 # Put it first so that "make" without argument is like "make help".
 help:
