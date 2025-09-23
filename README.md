@@ -2,6 +2,15 @@
 Modifies a base image by inserting others in the corners and generates all possible variants. Based on the Card Game Flesh And Blood
 To see more about the game visit: https://fabtcg.com/
 
+
+## Index
+1. [How to use](#how-to-use)  
+2. [Naming](#naming)  
+3. [Requirements](#requirements)  
+4. [Run it](#run-it)  
+5. [Executing](#executing)  
+6. [Example of results](#example-of-results)
+
 # How to use
 
 To execute the program you should include before an image in a "base" folder.
@@ -162,7 +171,9 @@ The base image is this one:
 
 And some of the outputs are the next:
 
-<img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_2.webp" alt="output image 1" width="200" height="300">
-<img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_3.webp" alt="output image 2" width="200" height="300">
+<div align="center">
+<img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_2.webp" alt="output image 1" width="200" height="300"><br>
+<img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_3.webp" alt="output image 2" width="200" height="300"><br>
 <img src="docs/imgs/shapeshifter_non-cost_non-pitch_non-attack.webp" alt="output image 3" width="200" height="300">
+</div>
 
