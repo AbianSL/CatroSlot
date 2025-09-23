@@ -171,9 +171,19 @@ The base image is this one:
 
 And some of the outputs are the next:
 
-<div align="center">
-<img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_2.webp" alt="output image 1" width="200" height="300"><br>
-<img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_3.webp" alt="output image 2" width="200" height="300"><br>
-<img src="docs/imgs/shapeshifter_non-cost_non-pitch_non-attack.webp" alt="output image 3" width="200" height="300">
-</div>
-
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_2.webp" alt="output image 1" width="200" height="300"><br>
+      Output 1
+    </td>
+    <td align="center">
+      <img src="docs/imgs/shapeshifter_non-cost_non-pitch_default_3.webp" alt="output image 2" width="200" height="300"><br>
+      Output 2
+    </td>
+    <td align="center">
+      <img src="docs/imgs/shapeshifter_non-cost_non-pitch_non-attack.webp" alt="output image 3" width="200" height="300"><br>
+      Output 3
+    </td>
+  </tr>
+</table>
