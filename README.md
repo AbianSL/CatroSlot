@@ -20,7 +20,7 @@ ALL CARDS SHOULD BE IN THE SAME EDITION (new or old)
 
 ## Naming
 
-the image should be a card with a format "{talent}_{class}_{action}_{color}.png"
+the image should be a card with a format "{talent}\_{class}\_{action}_{color}.png"
 where:
 - talent: is the talent of the card e.g: "draconic", "Ice", "lighting" etc...
 - class: is the class of the card e.g: "warrior", "illusionist", "brute" etc...
